@@ -7,12 +7,16 @@ h1 {
     font-size: 1.8rem;
     color: white;
 }
+h2 {
+    color: black;
+}
 .topnav {
     overflow: hidden;
     background-color: #0A1128;
 }
 body {
     margin: 0;
+	background-color: #FAEFE8;
 }
 .content {
     padding: 50px;
@@ -26,16 +30,25 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 .card {
-    background-color: white;
+    background-color: #FAEFE8;
     box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5);
 }
 button {
+	font-size: 1rem;
     color: white;
-    padding: 14px 20px;
+    padding: 20px 40px;
     margin: 8px 0;
-    border: none;
+	margin-right:16px;
+    border: 1px solid black;
     cursor: pointer;
     border-radius: 4px;
+	transition-duration: 0.4s;
+}
+
+button:hover {
+  background-color: #FA9491;
+  color: black;
+  border: 1px solid black;
 }
 
 .onButton{
@@ -55,7 +68,7 @@ button {
 }
 
 .gray-label {
-    color: #bebebe;
+    color: black;
     font-size: 1rem;
 }
 
