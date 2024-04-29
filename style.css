@@ -45,12 +45,6 @@ button {
 	transition-duration: 0.4s;
 }
 
-button:hover {
-  background-color: #FA9491;
-  color: black;
-  border: 1px solid black;
-}
-
 .onButton{
     background-color: #1b8a94;
 }
