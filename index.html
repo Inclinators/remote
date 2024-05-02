@@ -30,7 +30,9 @@
                 <button id="call3Button" class="onButton">3</button>
                 <button id="call4Button" class="onButton">4</button>
                 <button id="call5Button" class="onButton">5</button>
-		<p class="gray-label">Board Voltage: <span id="valueContainer"> </span>V</p>
+				
+				<p class="gray-label">Last Action: <span id="valueSent"> </span></p>
+				<p class="gray-label">Board Voltage: <span id="valueContainer"> </span>V</p>
                 <p class="gray-label">Last Update: <span id="timestamp"></span></p>
             </div>
         </div>
@@ -165,8 +167,31 @@
             })
             .then(() => 
 			{
-                latestValueSent.innerHTML = value;
-                console.log("Value written to LEDcharacteristic:", value);
+                switch (value) {
+				  case 1:
+					latestValueSent.innerHTML = "Stop Button Pressed";
+					console.log("Stop Button Pressed");
+					break;
+				  case 2:
+					latestValueSent.innerHTML = "Call 1 Button Pressed";
+					console.log("Call 1 Button Pressed");
+					break;
+				  case 3:
+					latestValueSent.innerHTML = "Call 2 Button Pressed";
+					console.log("Call 2 Button Pressed");
+					break;
+				  case 4:
+					latestValueSent.innerHTML = "Call 3 Button Pressed";
+					console.log("Call 3 Button Pressed");
+					break;
+				  case 5:
+					latestValueSent.innerHTML = "Call 4 Button Pressed";
+					console.log("Call 4 Button Pressed");
+					break;
+				  case 6:
+					latestValueSent.innerHTML = "Call 5 Button Pressed";
+					console.log("Call 5 Button Pressed");
+				}
             })
             .catch(error => 
 			{
