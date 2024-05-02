@@ -64,6 +64,25 @@ button {
 .gray-label {
     color: black;
     font-size: 1rem;
+	margin: 10px;
+}
+
+.gray-label1 {
+    color: black;
+    font-size: 1rem;
+	margin: 10px 50px 3px;
+}
+
+.gray-label2 {
+    color: black;
+    font-size: 1rem;
+	margin: 3px 50px 3px;
+}
+
+.gray-label3 {
+    color: black;
+    font-size: 1rem;
+	margin: 3px 50px 10px;
 }
 
 .reading {
