@@ -58,6 +58,8 @@
 
     //Define BLE Device Specs
     var deviceName ='Inclinator';
+    var deviceName2 ='Inclinator_Receiver';
+    var deviceName3 ='Inclinator_Emitter';
     var bleService = '36af5f30-b23e-47ef-9004-c85e90723ba1';
     var sensorCharacteristic= '36af5f31-b23e-47ef-9004-c85e90723ba1';
     var ledCharacteristic = '36af5f32-b23e-47ef-9004-c85e90723ba1';
@@ -100,7 +102,7 @@
     function connectToDevice(){
         console.log('Initializing Bluetooth...');
         navigator.bluetooth.requestDevice({
-            filters: [{name: deviceName}],
+            filters: [{name: deviceName}, {name: deviceName2}, {name: deviceName3}],
             optionalServices: [bleService]
         })
         .then(device => {
