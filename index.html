@@ -112,7 +112,7 @@
 	channel = channel.toString().padStart(2, '0');
 	let LocalAdValue = document.getElementById('localAddr').value;
 	LocalAdValue = LocalAdValue.toString().padStart(3, '0');
-	writeComCharacteristic("Ch:" + channelValue + "Ad:" + LocalAdValue);
+	writeComCharacteristic("Ch:" + channel + "Ad:" + LocalAdValue);
 	});
 
     // Check if BLE is available in your Browser
