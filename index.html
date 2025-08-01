@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Inclinator Services Bluetooth Remote App</title>
+    <title>Inclinator Services Bluetooth Remote Configuration App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="favicon.ico">
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="topnav">
-        <h1>Inclinator Services Bluetooth Remote</h1>
+        <h1>Inclinator Services Bluetooth Remote Configuration</h1>
     </div>
     <div class="content">
         <div class="card-grid">
@@ -19,23 +19,40 @@
                     <button id="disconnectBleButton" class="disconnectButton"> Disconnect from Inclinator</button>
                 </p>
                 <p class="gray-label">State: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong></p>
+				<br>
             </div>
         </div>
         <div class="card-grid">
             <div class="card">
                 <h2>Remote Control</h2>
+				
                 <button id="stopButton" class="onButton">Stop</button>
                 <button id="call1Button" class="onButton">1</button>
                 <button id="call2Button" class="onButton">2</button>
                 <button id="call3Button" class="onButton">3</button>
                 <button id="call4Button" class="onButton">4</button>
                 <button id="call5Button" class="onButton">5</button>
+				<button id="call6Button" class="onButton">6</button>
 				
 				<p class="gray-label1">Last Action: <span id="valueSent"> </span></p>
 				<p class="gray-label2">Board Voltage: <span id="valueContainer"> </span>V</p>
                 <p class="gray-label3">Last Update: <span id="timestamp"></span></p>
+				<br>
             </div>
         </div>
+		<div class="card-grid">
+            <div class="card">
+                <h2>Communication Settings</h2>				
+				<label>Channel:</label>
+				<input type="number" id="channel" min="0" max="80" value="0">
+                <label>Local Address:</label>
+				<input type="number" id="localAddr" min="0" max="255" value="0">
+				<br><br>
+				<button id="SendButton" class="onButton" onclick="sendConfig()">Send Communication Settings</button>
+				<br><br>
+            </div>
+        </div>
+
     </div>
     <div class="footer">
         <p><a href="https://inclinators.com.au/">Inclinators Services</a></p>
@@ -51,18 +68,21 @@
     const call3Button = document.getElementById('call3Button');
     const call4Button = document.getElementById('call4Button');
     const call5Button = document.getElementById('call5Button');
+	const call6Button = document.getElementById('call6Button');
     const retrievedValue = document.getElementById('valueContainer');
     const latestValueSent = document.getElementById('valueSent');
     const bleStateContainer = document.getElementById('bleState');
     const timestampContainer = document.getElementById('timestamp');
+	const SendButton = document.getElementById('SendButton');
 
     //Define BLE Device Specs
     var deviceName ='Inclinator';
-    var deviceName2 ='Inclinator_Receiver';
-    var deviceName3 ='Inclinator_Emitter';
+	var deviceName2 ='Inclinator_Receiver';
+	var deviceName3 ='Inclinator_Emitter';
     var bleService = '36af5f30-b23e-47ef-9004-c85e90723ba1';
     var sensorCharacteristic= '36af5f31-b23e-47ef-9004-c85e90723ba1';
     var ledCharacteristic = '36af5f32-b23e-47ef-9004-c85e90723ba1';
+	var comCharacteristic = '5113f45f-1e2b-46a8-b73f-19cd9d0f1252';
 
     //Global Variables to Handle Bluetooth
     var bleServer;
@@ -86,6 +106,8 @@
     call3Button.addEventListener('click', () => writeOnCharacteristic(4));
     call4Button.addEventListener('click', () => writeOnCharacteristic(5));
     call5Button.addEventListener('click', () => writeOnCharacteristic(6));
+	call6Button.addEventListener('click', () => writeOnCharacteristic(7));
+	SendButton.addEventListener('click', () => writeComCharacteristic("Ch:" + parseInt(document.getElementById('channel').value)));
 
     // Check if BLE is available in your Browser
     function isWebBluetoothEnabled() {
@@ -193,11 +215,43 @@
 				  case 6:
 					latestValueSent.innerHTML = "Call 5 Button Pressed";
 					console.log("Call 5 Button Pressed");
+					break;
+				  case 7:
+					latestValueSent.innerHTML = "Call 6 Button Pressed";
+					console.log("Call 6 Button Pressed");
+					break;
 				}
             })
             .catch(error => 
 			{
                 console.error("Error writing to the LED characteristic: ", error);
+            });
+        } else 
+		{
+            console.error ("Bluetooth is not connected. Cannot write to characteristic.")
+            window.alert("Bluetooth is not connected. Cannot write to characteristic. \n Connect to BLE first!")
+        }
+    }
+	
+	function writeComCharacteristic(value)
+	{
+        if (bleServer && bleServer.connected) 
+		{
+            bleServiceFound.getCharacteristic(comCharacteristic)
+            .then(characteristic => 
+			{
+                console.log("Found the COM characteristic: ", characteristic.uuid);
+                const data = new Uint8Array([value]);
+                return characteristic.writeValue(data);
+            })
+            .then(() => 
+			{
+				latestValueSent.innerHTML = "Communication Settings Sent";
+				console.log("Communication Settings Sent");	
+            })
+            .catch(error => 
+			{
+                console.error("Error writing to the COM characteristic: ", error);
             });
         } else 
 		{
@@ -248,5 +302,98 @@
     }
 
 </script>
+<style>
 
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    display: inline-block;
+    text-align: center;
+}
+h1 {
+    font-size: 1.8rem;
+    color: white;
+}
+h2 {
+    color: black;
+}
+.topnav {
+    overflow: hidden;
+    background-color: #0A1128;
+}
+body {
+    margin: 0;
+	background-color: #FAEFE8;
+}
+.content {
+    padding: 20px;
+}
+.card-grid {
+    max-width: 870px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+.card {
+    background-color: #FAEFE8;
+    box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5);
+}
+button {
+	font-size: 1rem;
+    color: white;
+    padding: 20px 40px;
+    margin: 8px 0;
+	margin-right:16px;
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 4px;
+	transition-duration: 0.4s;
+}
+
+.onButton{
+    background-color: #1b8a94;
+}
+
+.offButton{
+    background-color: #5f6c6d;
+}
+
+.connectButton{
+    background-color: #24af37;
+}
+
+.disconnectButton{
+    background-color: #d13a30;
+}
+
+.gray-label {
+    color: black;
+    font-size: 1rem;
+	margin: 10px;
+}
+
+.gray-label1 {
+    color: black;
+    font-size: 1rem;
+	margin: 10px 50px 3px;
+}
+
+.gray-label2 {
+    color: black;
+    font-size: 1rem;
+	margin: 3px 50px 3px;
+}
+
+.gray-label3 {
+    color: black;
+    font-size: 1rem;
+	margin: 3px 50px 10px;
+}
+
+.reading {
+    font-size: 1.8rem;
+}
+
+</style>
 </html>
