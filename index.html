@@ -106,8 +106,12 @@
     call3Button.addEventListener('click', () => writeOnCharacteristic(4));
     call4Button.addEventListener('click', () => writeOnCharacteristic(5));
     call5Button.addEventListener('click', () => writeOnCharacteristic(6));
-	call6Button.addEventListener('click', () => writeOnCharacteristic(7));
-	SendButton.addEventListener('click', () => writeComCharacteristic("Ch:" + parseInt(document.getElementById('channel').value)));
+    call6Button.addEventListener('click', () => writeOnCharacteristic(7));
+    SendButton.addEventListener('click', () => {
+	const channelValue = document.getElementById('channel').value;
+	const LocalAdValue = document.getElementById('localAddr').value;
+	writeComCharacteristic("Ch:" + channelValue + "Ad:" + LocalAdValue);
+	}
 
     // Check if BLE is available in your Browser
     function isWebBluetoothEnabled() {
