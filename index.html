@@ -251,8 +251,8 @@
             .then(characteristic => 
 			{
                 console.log("Found the COM characteristic: ", characteristic.uuid);
-                const data = new Uint8Array([value]);
-                return characteristic.writeValue(data);
+                //const data = new Uint8Array([value]);
+                return characteristic.writeValue(value);
             })
             .then(() => 
 			{
@@ -407,3 +407,4 @@ button {
 
 </style>
 </html>
+
