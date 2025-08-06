@@ -178,7 +178,7 @@
         bleStateContainer.innerHTML = "Inclinator disconnected";
         bleStateContainer.style.color = "#d13a30";
 
-        connectToDevice();
+        //connectToDevice();
     }
 
     function handleCharacteristicChange(event){
@@ -251,8 +251,9 @@
             .then(characteristic => 
 			{
                 console.log("Found the COM characteristic: ", characteristic.uuid);
-                //const data = new Uint8Array([value]);
-                return characteristic.writeValue(value);
+				const encoder = new TextEncoder();
+				const data = encoder.encode(value);
+                return characteristic.writeValue(data);
             })
             .then(() => 
 			{
@@ -270,25 +271,32 @@
         }
     }
 
-    function disconnectDevice() {
+    function disconnectDevice() 
+	{
         console.log("Disconnect Device.");
-        if (bleServer && bleServer.connected) {
-            if (sensorCharacteristicFound) {
+        if (bleServer && bleServer.connected) 
+		{
+            if (sensorCharacteristicFound) 
+			{
                 sensorCharacteristicFound.stopNotifications()
-                    .then(() => {
+                    .then(() => 
+					{
                         console.log("Notifications Stopped");
                         return bleServer.disconnect();
                     })
-                    .then(() => {
+                    .then(() => 
+					{
                         console.log("Device Disconnected");
                         bleStateContainer.innerHTML = "Inclinator Disconnected";
                         bleStateContainer.style.color = "#d13a30";
 
                     })
-                    .catch(error => {
+                    .catch(error => 
+					{
                         console.log("An error occurred:", error);
                     });
-            } else {
+            } else 
+			{
                 console.log("No characteristic found to disconnect.");
             }
         } else {
@@ -312,100 +320,3 @@
     }
 
 </script>
-<style>
-
-html {
-    font-family: Arial, Helvetica, sans-serif;
-    display: inline-block;
-    text-align: center;
-}
-h1 {
-    font-size: 1.8rem;
-    color: white;
-}
-h2 {
-    color: black;
-}
-.topnav {
-    overflow: hidden;
-    background-color: #0A1128;
-}
-body {
-    margin: 0;
-	background-color: #FAEFE8;
-}
-.content {
-    padding: 20px;
-}
-.card-grid {
-    max-width: 870px;
-    margin: 0 auto;
-    margin-bottom: 20px;
-    display: grid;
-    grid-gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-.card {
-    background-color: #FAEFE8;
-    box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5);
-}
-button {
-	font-size: 1rem;
-    color: white;
-    padding: 20px 40px;
-    margin: 8px 0;
-	margin-right:16px;
-    border: 1px solid black;
-    cursor: pointer;
-    border-radius: 4px;
-	transition-duration: 0.4s;
-}
-
-.onButton{
-    background-color: #1b8a94;
-}
-
-.offButton{
-    background-color: #5f6c6d;
-}
-
-.connectButton{
-    background-color: #24af37;
-}
-
-.disconnectButton{
-    background-color: #d13a30;
-}
-
-.gray-label {
-    color: black;
-    font-size: 1rem;
-	margin: 10px;
-}
-
-.gray-label1 {
-    color: black;
-    font-size: 1rem;
-	margin: 10px 50px 3px;
-}
-
-.gray-label2 {
-    color: black;
-    font-size: 1rem;
-	margin: 3px 50px 3px;
-}
-
-.gray-label3 {
-    color: black;
-    font-size: 1rem;
-	margin: 3px 50px 10px;
-}
-
-.reading {
-    font-size: 1.8rem;
-}
-
-</style>
-</html>
-
-
