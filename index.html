@@ -44,9 +44,9 @@
             <div class="card">
                 <h2>Communication Settings</h2>				
 				<label>Channel:</label>
-				<input type="number" id="channel" min="0" max="80" value="0">
+				<input type="number" id="channel" min="1" max="80" value="1">
                 <label>Local Address:</label>
-				<input type="number" id="localAddr" min="0" max="255" value="0">
+				<input type="number" id="localAddr" min="1" max="255" value="1">
 				<br><br>
 				<button id="SendButton" class="onButton">Send Communication Settings</button>
 				<br><br>
@@ -109,9 +109,17 @@
 	call6Button.addEventListener('click', () => writeOnCharacteristic(7));
 	SendButton.addEventListener('click', () => {
 	  let channel = document.getElementById('channel').value;
+	  if (channel < 1 || channel > 80) {
+		alert("Channel must be between 1 and 80");
+		return;
+	}
 	  channel = channel.toString().padStart(2, '0');
 	  
 	  let LocalAdValue = document.getElementById('localAddr').value;
+	  if (localAddr < 1 || localAddr > 255) {
+    alert("Local Address must be between 1 and 255");
+    return;
+}
 	  LocalAdValue = LocalAdValue.toString().padStart(3, '0');
 
 	  let message = "Ch:" + channel + "Ad:" + LocalAdValue;
@@ -320,5 +328,6 @@
     }
 
 </script>
+
 
 
