@@ -142,7 +142,11 @@
     function connectToDevice(){
         console.log('Initializing Bluetooth...');
         navigator.bluetooth.requestDevice({
-            filters: [{name: deviceName}, {name: deviceName2}, {name: deviceName3}],
+            filters: [
+				{ namePrefix: "Repeater_" },
+				{ namePrefix: "Receiver_" },
+				{ namePrefix: "Emitter_" }
+			],
             optionalServices: [bleService]
         })
         .then(device => {
@@ -328,6 +332,4 @@
     }
 
 </script>
-
-
 
