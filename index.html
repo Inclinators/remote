@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Inclinator Services Bluetooth Remote Configuration App</title>
+    <title>Inclinated Lift Services Bluetooth Remote Configuration App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="favicon.ico">
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="topnav">
-        <h1>Inclinator Services Bluetooth Remote Configuration</h1>
+        <h1>Inclinated Lift Services Bluetooth Remote Configuration</h1>
     </div>
     <div class="content">
         <div class="card-grid">
@@ -46,7 +46,7 @@
 				<label>Channel:</label>
 				<input type="number" id="channel" min="1" max="80" value="1">
                 <label>Local Address:</label>
-				<input type="number" id="localAddr" min="1" max="255" value="1">
+				<input type="number" id="localAddr" min="1" max="99" value="1">
 				<br><br>
 				<button id="SendButton" class="onButton">Send Communication Settings</button>
 				<br><br>
@@ -76,9 +76,6 @@
 	const SendButton = document.getElementById('SendButton');
 
     //Define BLE Device Specs
-    var deviceName ='Inclinator_Repeater';
-	var deviceName2 ='Inclinator_Receiver';
-	var deviceName3 ='Inclinator_Emitter';
     var bleService = '36af5f30-b23e-47ef-9004-c85e90723ba1';
     var sensorCharacteristic= '36af5f31-b23e-47ef-9004-c85e90723ba1';
     var ledCharacteristic = '36af5f32-b23e-47ef-9004-c85e90723ba1';
@@ -116,11 +113,11 @@
 	  channel = channel.toString().padStart(2, '0');
 	  
 	  let LocalAdValue = document.getElementById('localAddr').value;
-	  if (localAddr < 1 || localAddr > 255) {
-    alert("Local Address must be between 1 and 255");
+	  if (localAddr < 1 || localAddr > 99) {
+    alert("Local Address must be between 1 and 99");
     return;
 }
-	  LocalAdValue = LocalAdValue.toString().padStart(3, '0');
+	  LocalAdValue = LocalAdValue.toString().padStart(2, '0');
 
 	  let message = "Ch:" + channel + "Ad:" + LocalAdValue;
 	  console.log("Sending:", message);  // For debugging
@@ -143,6 +140,7 @@
         console.log('Initializing Bluetooth...');
         navigator.bluetooth.requestDevice({
             filters: [
+				{ namePrefix: "Inclinator_" },
 				{ namePrefix: "Repeater_" },
 				{ namePrefix: "Receiver_" },
 				{ namePrefix: "Emitter_" }
@@ -332,4 +330,5 @@
     }
 
 </script>
+
 
